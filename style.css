@@ -18,9 +18,15 @@ html, body {
   overflow-x: hidden;
 }
 
-main {
+body {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   min-height: 100dvh;
+}
+
+main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -107,14 +113,60 @@ main {
   50.01%, 100% { opacity: 0; }
 }
 
+/* ============================================
+   Footer — X handles + email
+   ============================================ */
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.75rem;
+  padding: 1.5rem 1.25rem 2rem;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  animation: rise 1.2s ease-out 1.6s both;
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: rgba(0, 255, 65, 0.7);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.social svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.social:hover,
+.social:focus-visible {
+  color: var(--green);
+  transform: translateY(-1px);
+  outline: none;
+}
+
 @media (max-width: 480px) {
   .logo { width: 120px; border-radius: 14px; }
   main  { gap: 1.25rem; }
+  .footer {
+    gap: 1.25rem;
+    font-size: 0.95rem;
+    padding: 1.25rem 1rem 1.5rem;
+  }
+  .social svg { width: 18px; height: 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .logo-wrap, .logo, .cursor, .brand, .hero, .line2 {
+  .logo-wrap, .logo, .cursor, .brand, .hero, .line2,
+  .footer, .social {
     animation: none !important;
+    transition: none !important;
   }
   .logo { box-shadow: 0 0 30px var(--glow-soft); }
 }
