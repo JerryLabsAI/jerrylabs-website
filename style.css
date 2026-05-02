@@ -4,8 +4,7 @@
   --bg: #0a0a0a;
   --green: #00ff41;
   --green-dim: rgba(0, 255, 65, 0.6);
-  --glow-soft: rgba(0, 255, 65, 0.32);
-  --glow-strong: rgba(0, 255, 65, 0.6);
+  --green-faint: rgba(0, 255, 65, 0.5);
 }
 
 html, body {
@@ -18,9 +17,15 @@ html, body {
   overflow-x: hidden;
 }
 
-main {
+body {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   min-height: 100dvh;
+}
+
+main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,21 +35,98 @@ main {
   gap: 1.5rem;
 }
 
-.logo-wrap {
-  animation:
-    drift 6.5s ease-in-out infinite,
-    fade 1.4s ease-out 0s both;
-}
+/* ============================================
+   Jerry — the logo, alive
+   Each element animates independently.
+   Different periods = no mechanical sync.
+   ============================================ */
 
-.logo {
-  width: 180px;
+.jerry {
+  width: 200px;
   height: auto;
   display: block;
-  border-radius: 18px;
-  box-shadow: 0 0 30px var(--glow-soft);
-  animation: breathe 4s ease-in-out infinite;
-  will-change: transform, box-shadow;
+  overflow: visible;
+  animation: jerry-fade 1.4s ease-out 0s both;
 }
+
+.j-aura,
+.j-hex,
+.j-nucleus,
+.j-top,
+.j-tr,
+.j-tl,
+.j-bot {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* The aura — slow ambient pulse */
+.j-aura {
+  animation: aura-pulse 5s ease-in-out infinite;
+}
+
+/* The head — slow breath */
+.j-hex {
+  animation: hex-breath 4.5s ease-in-out infinite;
+}
+
+/* The heartbeat — fast double-pump */
+.j-nucleus {
+  animation: heartbeat 1.6s ease-in-out infinite;
+}
+
+/* Fragments — each on its own clock */
+.j-top { animation: drift-top 6s   ease-in-out infinite; }
+.j-tr  { animation: drift-tr  7.2s ease-in-out infinite; }
+.j-tl  { animation: drift-tl  5.5s ease-in-out infinite; transform-origin: 50% 100%; }
+.j-bot { animation: drift-bot 6.7s ease-in-out infinite; }
+
+@keyframes aura-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1);    }
+  50%      { opacity: 1;    transform: scale(1.08); }
+}
+
+@keyframes hex-breath {
+  0%, 100% { transform: scale(1);     filter: drop-shadow(0 0 0 transparent); }
+  50%      { transform: scale(1.025); filter: drop-shadow(0 0 6px rgba(0,255,65,0.6)); }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1);    }
+  18%      { transform: scale(1.18); }
+  36%      { transform: scale(1);    }
+  54%      { transform: scale(1.08); }
+  72%      { transform: scale(1);    }
+}
+
+@keyframes drift-top {
+  0%, 100% { transform: translate(0, 0)    rotate(0deg); }
+  50%      { transform: translate(1px, -3px) rotate(-2deg); }
+}
+
+@keyframes drift-tr {
+  0%, 100% { transform: translate(0, 0)   rotate(0deg); }
+  50%      { transform: translate(3px, 1px) rotate(4deg); }
+}
+
+@keyframes drift-tl {
+  0%, 100% { transform: rotate(0deg)  translateY(0); }
+  50%      { transform: rotate(-3deg) translateY(-2px); }
+}
+
+@keyframes drift-bot {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(0, 3px); }
+}
+
+@keyframes jerry-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================
+   Text
+   ============================================ */
 
 .brand {
   font-size: clamp(1.4rem, 4vw, 2.1rem);
@@ -76,27 +158,6 @@ main {
   animation: blink 1.05s steps(2, end) infinite;
 }
 
-@keyframes breathe {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 24px var(--glow-soft);
-  }
-  50% {
-    transform: scale(1.035);
-    box-shadow: 0 0 52px var(--glow-strong);
-  }
-}
-
-@keyframes drift {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-7px); }
-}
-
-@keyframes fade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
 @keyframes rise {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -107,14 +168,67 @@ main {
   50.01%, 100% { opacity: 0; }
 }
 
-@media (max-width: 480px) {
-  .logo { width: 120px; border-radius: 14px; }
-  main  { gap: 1.25rem; }
+/* ============================================
+   Footer
+   ============================================ */
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem 1.25rem 2rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  animation: rise 1.2s ease-out 1.6s both;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .logo-wrap, .logo, .cursor, .brand, .hero, .line2 {
-    animation: none !important;
+.social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--green-faint);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.social svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.social:hover,
+.social:focus-visible {
+  color: var(--green);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+/* ============================================
+   Mobile
+   ============================================ */
+
+@media (max-width: 480px) {
+  .jerry { width: 140px; }
+  main   { gap: 1.25rem; }
+  .footer {
+    gap: 1rem;
+    font-size: 0.72rem;
+    padding: 1.25rem 1rem 1.5rem;
   }
-  .logo { box-shadow: 0 0 30px var(--glow-soft); }
+}
+
+/* ============================================
+   Reduced motion — honor the user
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .jerry, .j-aura, .j-hex, .j-nucleus, .j-top, .j-tr, .j-tl, .j-bot,
+  .brand, .hero, .line2, .cursor, .footer, .social {
+    animation: none !important;
+    transition: none !important;
+  }
+  .j-aura { opacity: 0.7; }
 }
